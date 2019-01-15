@@ -1,0 +1,7 @@
+name: System
+author: DSeeLP
+version: 1.0
+main: dseelp.main.Main
+commands:
+  troll:
+    description: Troll Befehl
