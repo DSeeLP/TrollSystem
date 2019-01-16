@@ -1,6 +1,7 @@
 package dseelp.cmds;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -18,11 +19,13 @@ import dseelp.main.Main;
 public class Troll implements CommandExecutor, Listener{
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+        String helpmsg = Main.cfg.getString("General.helpmsg");
+        helpmsg = helpmsg.replace("%a%", "»");
         String prefix = Main.prefix;
         if(cmd.getName().equalsIgnoreCase("troll"))
             if (sender instanceof Player) {
                 Player p = (Player) sender;
-                if(p.hasPermission("troll.cmd.troll") || (Main.trollmode.contains(p))){
+                if(p.hasPermission("troll.use") || (Main.trollmode.contains(p))){
                     if (args.length == 0) {
                         //vanish
                         if (Main.vanish.contains(p)) {
@@ -87,6 +90,8 @@ public class Troll implements CommandExecutor, Listener{
                                                         p.sendMessage("§c/troll §7- Aktiviert/Deaktiviert den §4TrollModus");
                                                         p.sendMessage("§c/troll gm §7- Versetzt dich in den §eKreativ Modus");
                                                         p.sendMessage("§c/troll show §7- Zeigt dich");
+                                                        p.sendMessage("§c/troll freeze §7- Friert Spieler ein");
+                                                        p.sendMessage("§c/troll boost §7- Der Spieler wird nach oben geboosted");
                                                         p.sendMessage("§c/troll stick §7- Gibt dir einen §7Knockback 100 §7Stick");
                                                         p.sendMessage("§c/troll vanish §7- Versteckt dich");
                                                         if (p.hasPermission("troll.other")) {
@@ -118,7 +123,7 @@ public class Troll implements CommandExecutor, Listener{
                                                                     if (p1 == null) {
                                                                         p.sendMessage("§7Der Spieler §6" + args[1] + " §7ist nicht online!");
                                                                     }else{
-                                                                        p1.setVelocity(new Vector(0, 25, 0));
+                                                                        p1.setVelocity(new Vector(0, 100, 0));
                                                                         p.sendMessage("§a" + p1.getName() + " §7wurde in die Luft geschleudert!");
                                                                     }
                                                                 }else{
@@ -132,51 +137,55 @@ public class Troll implements CommandExecutor, Listener{
                                                                     bowM.setDisplayName("§c§lSuper§b§lKnock");
                                                                     bow.setItemMeta(bowM);
                                                                     p.getInventory().addItem(bow);
-
                                                                 }else{
-                                                                    if (p.hasPermission("troll.other")){
-                                                                        if (args[0].equalsIgnoreCase("toggle")) {
-                                                                            if (args.length == 2) {
-                                                                                Player t = Bukkit.getPlayer(args[1]);
-                                                                                //vanish
-                                                                                if (Main.vanish.contains(t)) {
-                                                                                    Main.vanish.remove(t);
-                                                                                    for (Player all : Bukkit.getOnlinePlayers()) {
-                                                                                        all.showPlayer(t);
+                                                                    if (args[0].equalsIgnoreCase("fakeop")) {
+                                                                        Player t = Bukkit.getPlayer(args[1]);
+                                                                        t.sendMessage("§7Server: " + t.getName() + "wurde zum Opperator ernannt]");
+                                                                    }else{
+                                                                        if (p.hasPermission("troll.other")) {
+                                                                            if (args[0].equalsIgnoreCase("toggle")) {
+                                                                                if (args.length == 2) {
+                                                                                    Player t = Bukkit.getPlayer(args[1]);
+                                                                                    //vanish
+                                                                                    if (Main.vanish.contains(t)) {
+                                                                                        Main.vanish.remove(t);
+                                                                                        for (Player all : Bukkit.getOnlinePlayers()) {
+                                                                                            all.showPlayer(t);
+                                                                                        }
+                                                                                        t.sendMessage(prefix + "Die §aSpieler§7 sehen dich jetzt wieder!");
+
+                                                                                    }else{
+                                                                                        Main.vanish.add(t);
+                                                                                        for (Player all : Bukkit.getOnlinePlayers()) {
+                                                                                            all.hidePlayer(t);
+                                                                                        }
+                                                                                        t.sendMessage(prefix + "§7Du bist jetzt jetzt §evanish!");
+
                                                                                     }
-                                                                                    t.sendMessage(prefix + "Die §aSpieler§7 sehen dich jetzt wieder!");
+
+                                                                                    //Trollmode
+                                                                                    if (Main.trollmode.contains(t)) {
+                                                                                        Main.trollmode.remove(t);
+                                                                                        p.sendMessage(prefix + "§8Du hast den §cTrollMode§8 von§e " + t.getName() + " §cdeaktiviert!");
+                                                                                        t.sendMessage(prefix + "§8Dein §4TrollMode §8wurde von §e" + p.getDisplayName() + " §cdeaktiviert!");
+                                                                                        t.setGameMode(GameMode.SURVIVAL);
+
+                                                                                    }else{
+                                                                                        Main.trollmode.add(t);
+                                                                                        p.sendMessage(prefix + "§8Du hast den §cTrollMode§8 von§e " + t.getName() + " §aaktiviert!");
+                                                                                        t.sendMessage(prefix + "§8Dein §4TrollMode §8wurde von §e" + p.getDisplayName() + " §aaktiviert!");
+
+                                                                                    }
 
                                                                                 }else{
-                                                                                    Main.vanish.add(t);
-                                                                                    for (Player all : Bukkit.getOnlinePlayers()) {
-                                                                                        all.hidePlayer(t);
-                                                                                    }
-                                                                                    t.sendMessage(prefix + "§7Du bist jetzt jetzt §evanish!");
-
+                                                                                    p.sendMessage("§cBitte benutze /troll toggle <Name>");
                                                                                 }
-
-                                                                                //Trollmode
-                                                                                if (Main.trollmode.contains(t)) {
-                                                                                    Main.trollmode.remove(t);
-                                                                                    p.sendMessage(prefix + "§8Du hast den §cTrollMode§8 von§e " + t.getName() + " §cdeaktiviert!");
-                                                                                    t.sendMessage(prefix + "§8Dein §4TrollMode §8wurde von §e" + p.getDisplayName() + " §cdeaktiviert!");
-                                                                                    t.setGameMode(GameMode.SURVIVAL);
-
-                                                                                }else{
-                                                                                    Main.trollmode.add(t);
-                                                                                    p.sendMessage(prefix + "§8Du hast den §cTrollMode§8 von§e " + t.getName() + " §aaktiviert!");
-                                                                                    t.sendMessage(prefix + "§8Dein §4TrollMode §8wurde von §e" + p.getDisplayName() + " §aaktiviert!");
-
-                                                                                }
-
                                                                             }else{
-                                                                                p.sendMessage("§cBitte benutze /troll toggle <Name>");
+                                                                                p.sendMessage(ChatColor.translateAlternateColorCodes('&', helpmsg));
                                                                             }
                                                                         }else{
-                                                                            p.sendMessage(Main.helpmsg);
+                                                                            p.sendMessage("§cSystem §7» §6Du hast keine Rechte diesen SubBefehl auszuführen");
                                                                         }
-                                                                    }else{
-                                                                        p.sendMessage("§cSystem §7» §6Du hast keine Rechte diesen SubBefehl auszuführen");
                                                                     }
                                                                 }
                                                             }
@@ -186,11 +195,11 @@ public class Troll implements CommandExecutor, Listener{
                                             }
                                         }
                                 }else{
-                                    p.sendMessage("§cSystem §7» §6Dieser Befehl exestiert nicht!");
+                                    p.sendMessage(ChatColor.translateAlternateColorCodes('&', helpmsg));
                                 }
                             }
                         }else{
-                            p.sendMessage("§cSystem §7» §6Dieser Befehl exestiert nicht!");
+                            p.sendMessage(ChatColor.translateAlternateColorCodes('&', helpmsg));
                         }
                     }
                 return false;

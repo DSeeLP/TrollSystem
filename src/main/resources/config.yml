@@ -1,0 +1,7 @@
+# TrollPlugin by DSeeLP
+# § = &
+# Noperm ändert ausschließlich die NoPermission message vom /troll Befehl!
+#  Ändert die Unknown Command Message Global!
+General:
+  helpmsg: '§cSystem §8»§6 Dieser Befehl exestiert nicht'
+  noperm: '§cSystem §8»§6 Dieser Befehl exestiert nicht'
