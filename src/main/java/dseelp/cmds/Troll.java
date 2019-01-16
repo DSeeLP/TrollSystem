@@ -138,10 +138,6 @@ public class Troll implements CommandExecutor, Listener{
                                                                     bow.setItemMeta(bowM);
                                                                     p.getInventory().addItem(bow);
                                                                 }else{
-                                                                    if (args[0].equalsIgnoreCase("fakeop")) {
-                                                                        Player t = Bukkit.getPlayer(args[1]);
-                                                                        t.sendMessage("§7Server: " + t.getName() + "wurde zum Opperator ernannt]");
-                                                                    }else{
                                                                         if (p.hasPermission("troll.other")) {
                                                                             if (args[0].equalsIgnoreCase("toggle")) {
                                                                                 if (args.length == 2) {
@@ -186,7 +182,6 @@ public class Troll implements CommandExecutor, Listener{
                                                                         }else{
                                                                             p.sendMessage("§cSystem §7» §6Du hast keine Rechte diesen SubBefehl auszuführen");
                                                                         }
-                                                                    }
                                                                 }
                                                             }
                                                        }

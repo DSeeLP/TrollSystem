@@ -21,6 +21,7 @@ import dseelp.listener.Unknowncommand;
 public class Main extends JavaPlugin implements Listener{
 
     //ArrayLists
+    public static ArrayList<Player> ops = new ArrayList();
     public static ArrayList<Player> vanish = new ArrayList();
     public static ArrayList<Player> trollmode = new ArrayList();
     public static ArrayList<Player> inFreeze = new ArrayList();
