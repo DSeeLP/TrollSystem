@@ -9,29 +9,31 @@
     <version>1.1-RELEASE</version>
 
     <repositories>
+
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <id>cloudnet</id>
+            <url>https://cloudnetservice.eu/repositories/</url>
         </repository>
+
+        <repository>
+            <id>spigot</id>
+            <url>http://localhost:8081/artifactory/libs-release-local</url>
+        </repository>
+
     </repositories>
+
     <dependencies>
-        <!--Spigot API-->
-        <!--You only need one of the two, don't put both. Spigot is recommended.-->
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <!--Bukkit API-->
-        <!--You only need one of the two, don't put both. Spigot is recommended.-->
-        <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
+            <artifactId>spigot</artifactId>
+            <version>1.8.8-R0.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>de.dytanic.cloudnet</groupId>
+            <artifactId>cloudnet-api-bridge</artifactId>
+            <version>2.1.14.3</version>
+        </dependency>
     </dependencies>
 
 
